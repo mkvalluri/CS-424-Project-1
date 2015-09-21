@@ -20,8 +20,6 @@ var arc = d3.svg.arc()
     .outerRadius(radius)
     .innerRadius(0);
 
-var panelUpdated = [false, false, false];
-
 function drawPieChart() {
     var filteredData = payload.filter(filterPayload);
     if (groupBySelected > 0) {
@@ -73,5 +71,7 @@ function drawPieChart() {
         .text(function (d, i) {
             return d.data.AGE;
         });
+    arcs.append("svg:title")
+        .text(function (d) { return d.value; });
 
 };

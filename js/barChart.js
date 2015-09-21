@@ -91,9 +91,9 @@ function changeScale(data) {
     minValue[currentPanel - 1] = d3.min(data, function (d) {
         if (d.SEX == genderSelected && d.AGE != '85' && d.AGE != '999') {
             if (groupBySelected > 0)
-                return getData(d) - 10000;
+                return getData(d);
             else
-                return getData(d) - 1000;
+                return getData(d);
         }
     });
 
@@ -140,7 +140,7 @@ function drawBarChart() {
             .attr("transform", "translate(0, " + height + ")")
             .call(xAxis)
             .append("text")
-            .attr("transform", "translate(" + (width + 10) + ", 34)")
+            .attr("transform", "translate(" + (width + 20) + ", 34)")
             .attr("x", 2)
             .attr("dx", "1em")
             .attr("text-anchor", "end")
@@ -234,6 +234,11 @@ function drawBarChart() {
             .attr("x", function (d, i) {
                 return x(d.AGE);
             })
-            .remove();        
+            .remove();
+            
+        //Update the labels as well.
+        svg[currentPanel - 1].selectAll("title")
+            .data(filteredData)
+            .text(function (d) { return getData(d) });       
     }
 }
