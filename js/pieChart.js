@@ -14,7 +14,7 @@ var pieChartMargin = { top: (2 * pieChartDivHeight) / 100, right: (2 * pieChartD
     pieChartWidth = pieChartDivWidth - pieChartMargin.left - pieChartMargin.right,
     pieChartHeight = pieChartDivHeight - pieChartMargin.top - pieChartMargin.bottom;
 
-var radius = (Math.min(pieChartWidth - 50, pieChartHeight - 50) / 2) - 10;
+var radius = (Math.min(pieChartWidth - 20, pieChartHeight - 20) / 2) - 10;
 
 var arc = d3.svg.arc()
     .outerRadius(radius)
@@ -34,33 +34,7 @@ function drawPieChart() {
         });
 
     d3.select("piechart" + currentPanel).selectAll("svg").remove();
-
-    /* var svg = d3.selectAll("piechart" + currentPanel)
-         .append("svg")
-         .attr("width", pieChartWidth)
-         .attr("height", pieChartHeight)
-         .append("g")
-         .attr("transform", "translate(" + (pieChartWidth / 2) + "," + pieChartHeight / 2 + ")");
- 
-     svg.datum(filteredData).selectAll("path")
-         .data(pie)
-         .enter().append("path")
-         .attr("fill", function (d, i) { return getColor(i); })
-         .attr("d", arc)
-         .append("svg:text").attr("transform", function(d){
-             d.innerRadius = 0;
-             d.outerRadius = radius;
-             return "translate(" + arc.centroid(d) + ")";
-         }).attr("text-anchor", "middle").text( function(d, i) {
-             return "A";}
-         );     
-         
-         /*
-         .append("svg:title")
-         .text(function (d) {
-             return getData(d.data);
-         });*/
-        
+    
     //Create SVG element
     var svg = d3.select("piechart" + currentPanel)
         .append("svg")
@@ -87,19 +61,17 @@ function drawPieChart() {
             var c = arc.centroid(d),
                 x = c[0],
                 y = c[1],
-                // pythagorean theorem for hypotenuse
                 h = Math.sqrt(x * x + y * y);
-            return "translate(" + (x / h * (radius + 8)) + ',' +
-                (y / h * (radius + 15)) + ")";
+            return "translate(" + (x / h * (radius + 10)) + ',' +
+                (y / h * (radius + 10)) + ")";
         })
         .attr("dy", ".35em")
         .attr("text-anchor", function (d) {
-            // are we past the center?
             return (d.endAngle + d.startAngle) / 2 > Math.PI ?
                 "end" : "start";
         })
         .text(function (d, i) {
-            return d.value;
+            return d.data.AGE;
         });
 
 };

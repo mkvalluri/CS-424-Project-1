@@ -23,8 +23,9 @@ var barChartUpdated = [false, false, false];
 var minAge = 0;
 var maxAge = 85;
 
-var otherCountrySelected = false;
-var stateSelected = false;
+var otherCountrySelected = 0;
+var stateSelected = 0;
+var compareByCountries = true;
 
 var margin, width, height;
 
@@ -33,6 +34,8 @@ var stateSelect2 = document.getElementById("stateListSelect_2");
 var stateSelect3 = document.getElementById("stateListSelect_3");
 var stateFlag = [false, false, false];
 var svg = [];
+
+var countries = ["India", "Malaysia", "Germany", "Greece", "Syria", "UAE"];
 
 var states = [
     {
@@ -272,30 +275,76 @@ $('#groupBySelect').on('change', function () {
     drawAllCharts();
 });
 
-$('.countryListSelect').on('change', function() {
+$('.countryListSelect').on('change', function () {
     var panelId = $(this).attr('id').split('_')[1];
     currentCountry = $(this).val();
-    if(currentCountry != "US") {
-        currentState = currentCountry;
-        $('#stateListSelect_' + panelId).prop("disabled", "disabled");
-    }
-    else {
-        $('#stateListSelect_' + panelId).prop("disabled", false);
-    }
     currentPanel = panelId;
-    stateFlag[currentPanel - 1] = true;
-    //drawAllCharts();
+
+    if (currentCountry != "US") {
+        otherCountrySelected++;
+        $('#compareSelect').attr("disabled", "disabled");
+        stateFlag[currentPanel - 1] = true;
+    } else if (currentCountry == "US") {        
+        stateFlag[currentPanel - 1] = true;
+    } else
+    {
+        otherCountrySelected--;
+        if (otherCountrySelected == 0)
+            $('#compareSelect').removeAttr("disabled");
+        stateFlag[currentPanel - 1] = false;
+    }
+    drawAllCharts();
 });
 
 $('.stateListSelect').on('change', function () {
     var panelId = $(this).attr('id').split('_')[1];
     currentState = $(this).val();
     currentPanel = panelId;
-    stateFlag[currentPanel - 1] = true;
+
+    if (currentState != "0") {
+        stateSelected++;
+        $('#compareSelect').attr("disabled", "disabled");
+        stateFlag[currentPanel - 1] = true;
+    } else {
+        stateSelected--;
+        if (stateSelected == 0)
+            $('#compareSelect').removeAttr("disabled");
+        stateFlag[currentPanel - 1] = false;
+    }
     drawAllCharts();
 });
 
-$('.ageGroup').on('change', function() {
+$('#compareSelect').on('change', function () {
+    var tempVal = $(this).val();
+    if (tempVal == "0") {
+        compareByCountries = true;
+        addCountries();
+        $(".countryListSelect option[value='0']").prop('selected', true);
+        $('.stateListSelect').attr("disabled", "disabled");
+    } else {
+        compareByCountries = false;
+        removeCountries();
+        $(".countryListSelect option[value='US']").prop('selected', true);
+        $('.stateListSelect').removeAttr("disabled");
+    }
+});
+
+function removeCountries() {
+    countries.forEach(function (element) {
+        $(".countryListSelect  option[value='" + element + "']").remove();
+    });
+}
+
+function addCountries() {
+    countries.forEach(function (element) {
+        $('.countryListSelect')
+            .append($("<option></option>")
+                .attr("value", element)
+                .text(element));
+    });
+}
+
+$('.ageGroup').on('change', function () {
     minAge = parseInt($('#minValue').val());
     maxAge = parseInt($('#maxValue').val());
     resetMinMaxValues();
@@ -303,10 +352,11 @@ $('.ageGroup').on('change', function() {
 })
 
 function drawAllCharts() {
-    //drawBarChart();
+    drawBarChart();
     for (var i = 1; i <= 3; i++) {
         if (stateFlag[i - 1]) {
             grpColor = 0;
+            currentCountry = $('#countryListSelect_' + i).val();
             currentState = $('#stateListSelect_' + i).val();
             currentPanel = i;
             drawBarChart();
@@ -323,7 +373,7 @@ function getColor(value) {
     var tempVal = value;
     value = value / 7;
     var range = [0, 15];
-    
+
     if (eventSelected != "0" && tempVal < 12) {
         var color = d3.scale.linear()
             .domain(range)
@@ -439,10 +489,19 @@ function groupByAges(data) {
 
 //Used for filtering data based on State, Gender and Age.
 function filterPayload(dataObj) {
-    if (dataObj.NAME == currentState && dataObj.SEX == genderSelected && dataObj.AGE != "999" &&  dataObj.AGE >= minAge && dataObj.AGE <= maxAge) {
-        return true;
+    if (compareByCountries) {
+        if (dataObj.NAME == currentCountry && dataObj.SEX == genderSelected && dataObj.AGE != "999" && dataObj.AGE >= minAge && dataObj.AGE <= maxAge) {
+            return true;
+        } else {
+            return false;
+        }
+
     } else {
-        return false;
+        if (dataObj.NAME == currentState && dataObj.SEX == genderSelected && dataObj.AGE != "999" && dataObj.AGE >= minAge && dataObj.AGE <= maxAge) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
@@ -498,9 +557,9 @@ function loadData(error, data) {
 };
 
 window.onresize = function (event) {
-    resetMinMaxValues();
-    calculateDimensions();
-    drawAllCharts();
+   // resetMinMaxValues();
+ //   calculateDimensions();
+    //drawAllCharts();
 };
 
 d3.csv("resources/data_new.csv", type, loadData);

@@ -160,6 +160,7 @@ function drawBarChart() {
             .data(filteredData)
             .enter()
             .append("rect")
+            .attr("class", "bar")
             .attr("font-size", "150%")
             .attr("x", function (d) {
                 return x(d.AGE);
@@ -178,7 +179,7 @@ function drawBarChart() {
             .text(function (d) { return getData(d) });
     } else {
 
-        svg[currentPanel - 1].selectAll("g.y.axis")
+       svg[currentPanel - 1].selectAll("g.y.axis")
             .transition()
             .duration(1000)
             .call(yAxis);
@@ -195,6 +196,7 @@ function drawBarChart() {
         //Enter…
         bars.enter()
             .append("rect")
+            .attr("class", "bar")
             .attr("x", function (d) {
                 return x(d.AGE);
             })
