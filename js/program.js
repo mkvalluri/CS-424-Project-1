@@ -6,17 +6,25 @@
 // File: program.js
 //////////////////////////////////////////////////////////////////////////////////
 
+var currentCountry;
 var currentState;
 var currentPanel;
 
 var genderSelected = "0";
 
-var eventYearSelected = "2010"
+var eventSelected = "0"
+var yearSelected = "2010"
 
 var groupBySelected = 0;
 
 var payload;
 var barChartUpdated = [false, false, false];
+
+var minAge = 0;
+var maxAge = 85;
+
+var otherCountrySelected = false;
+var stateSelected = false;
 
 var margin, width, height;
 
@@ -24,6 +32,7 @@ var stateSelect1 = document.getElementById("stateListSelect_1");
 var stateSelect2 = document.getElementById("stateListSelect_2");
 var stateSelect3 = document.getElementById("stateListSelect_3");
 var stateFlag = [false, false, false];
+var svg = [];
 
 var states = [
     {
@@ -245,8 +254,14 @@ $('#genderSelect').on('change', function () {
     drawAllCharts();
 });
 
+$('#yearSelect').on('change', function () {
+    yearSelected = $(this).val();
+    resetMinMaxValues();
+    drawAllCharts();
+});
+
 $('#eventSelect').on('change', function () {
-    eventYearSelected = $(this).val();
+    eventSelected = $(this).val();
     resetMinMaxValues();
     drawAllCharts();
 });
@@ -257,6 +272,21 @@ $('#groupBySelect').on('change', function () {
     drawAllCharts();
 });
 
+$('.countryListSelect').on('change', function() {
+    var panelId = $(this).attr('id').split('_')[1];
+    currentCountry = $(this).val();
+    if(currentCountry != "US") {
+        currentState = currentCountry;
+        $('#stateListSelect_' + panelId).prop("disabled", "disabled");
+    }
+    else {
+        $('#stateListSelect_' + panelId).prop("disabled", false);
+    }
+    currentPanel = panelId;
+    stateFlag[currentPanel - 1] = true;
+    //drawAllCharts();
+});
+
 $('.stateListSelect').on('change', function () {
     var panelId = $(this).attr('id').split('_')[1];
     currentState = $(this).val();
@@ -265,8 +295,15 @@ $('.stateListSelect').on('change', function () {
     drawAllCharts();
 });
 
+$('.ageGroup').on('change', function() {
+    minAge = parseInt($('#minValue').val());
+    maxAge = parseInt($('#maxValue').val());
+    resetMinMaxValues();
+    drawAllCharts();
+})
+
 function drawAllCharts() {
-    drawBarChart();
+    //drawBarChart();
     for (var i = 1; i <= 3; i++) {
         if (stateFlag[i - 1]) {
             grpColor = 0;
@@ -286,6 +323,14 @@ function getColor(value) {
     var tempVal = value;
     value = value / 7;
     var range = [0, 15];
+    
+    if (eventSelected != "0" && tempVal < 12) {
+        var color = d3.scale.linear()
+            .domain(range)
+            .range(["Grey", "White"])
+            .interpolate(d3.interpolateHcl);
+        return color(10);
+    }
 
     if (groupBySelected > 0) {
         if (grpColor == 8)
@@ -394,21 +439,28 @@ function groupByAges(data) {
 
 //Used for filtering data based on State, Gender and Age.
 function filterPayload(dataObj) {
-    if (dataObj.NAME == currentState && dataObj.SEX == genderSelected && dataObj.AGE != "999" && dataObj.AGE != "85") {
+    if (dataObj.NAME == currentState && dataObj.SEX == genderSelected && dataObj.AGE != "999" &&  dataObj.AGE >= minAge && dataObj.AGE <= maxAge) {
         return true;
     } else {
         return false;
     }
 }
 
+function getYear() {
+    if (eventSelected != "0") {
+        return eventSelected;
+    }
+    return yearSelected;
+}
+
 function getData(d) {
-    if (eventYearSelected == "2010") {
+    if (getYear() == "2010") {
         return d.POPEST2010_CIV;
-    } else if (eventYearSelected == "2011") {
+    } else if (getYear() == "2011") {
         return d.POPEST2011_CIV;
-    } else if (eventYearSelected == "2012") {
+    } else if (getYear() == "2012") {
         return d.POPEST2012_CIV;
-    } else if (eventYearSelected == "2013") {
+    } else if (getYear() == "2013") {
         return d.POPEST2013_CIV;
     } else {
         return d.POPEST2014_CIV;
@@ -416,13 +468,13 @@ function getData(d) {
 }
 
 function getColumnName() {
-    if (eventYearSelected == "2010") {
+    if (getYear() == "2010") {
         return "POPEST2010_CIV";
-    } else if (eventYearSelected == "2011") {
+    } else if (getYear() == "2011") {
         return "POPEST2011_CIV";
-    } else if (eventYearSelected == "2012") {
+    } else if (getYear() == "2012") {
         return "POPEST2012_CIV";
-    } else if (eventYearSelected == "2013") {
+    } else if (getYear() == "2013") {
         return "POPEST2013_CIV";
     } else {
         return "POPEST2014_CIV";
@@ -446,8 +498,40 @@ function loadData(error, data) {
 };
 
 window.onresize = function (event) {
+    resetMinMaxValues();
     calculateDimensions();
-    //drawAllCharts();
+    drawAllCharts();
 };
 
-d3.csv("resources/data.csv", type, loadData);
+d3.csv("resources/data_new.csv", type, loadData);
+
+function createBarChartSVGs() {
+
+    var svg1 = d3.select("barchart1")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom + 10)
+        .append("g")
+        .attr("transform", "translate(" + (margin.left + 30) + ",0)");
+
+    var svg2 = d3.select("barchart2")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom + 10)
+        .append("g")
+        .attr("transform", "translate(" + (margin.left + 30) + ",0)");
+
+    var svg3 = d3.select("barchart3")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom + 10)
+        .append("g")
+        .attr("transform", "translate(" + (margin.left + 30) + ",0)");
+
+    svg.push(svg1);
+    svg.push(svg2);
+    svg.push(svg3);
+
+}
+
+createBarChartSVGs();

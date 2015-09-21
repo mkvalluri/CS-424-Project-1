@@ -38,7 +38,6 @@ function calculateDimensions() {
 
 calculateDimensions();
 
-
 //Used for calculating new scales based on the input data.
 function changeScale(data) {
     x = d3.scale.ordinal()
@@ -97,15 +96,15 @@ function drawBarChart() {
     }
     changeScale(filteredData);
 
+
     if (!barChartUpdated[currentPanel - 1]) {
         barChartUpdated[currentPanel - 1] = true;
-        var svg1 = d3.selectAll("barchart" + currentPanel).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom + 10)
-            .append("g")
+
+        svg[currentPanel - 1].append("g")
             .attr("transform", "translate(" + (margin.left + 30) + ",0)");
 
-        svg1.append("g").attr("class", "x axis")
+        svg[currentPanel - 1].append("g")
+            .attr("class", "x axis")
             .attr("transform", "translate(0, " + height + ")")
             .call(xAxis)
             .append("text")
@@ -115,7 +114,8 @@ function drawBarChart() {
             .attr("text-anchor", "end")
             .text("Age");
 
-        svg1.append("g").attr("class", "y axis")
+        svg[currentPanel - 1].append("g")
+            .attr("class", "y axis")
             .call(yAxis)
             .append("text")
             .attr("transform", "rotate(-90)")
@@ -124,10 +124,10 @@ function drawBarChart() {
             .style("text-anchor", "end")
             .text("Population");
 
-        svg1.selectAll(".bar")
+        svg[currentPanel - 1].selectAll("rect")
             .data(filteredData)
-            .enter().append("rect")
-            .attr("class", "bar")
+            .enter()
+            .append("rect")
             .attr("font-size", "150%")
             .attr("x", function (d) {
                 return x(d.AGE);
@@ -146,62 +146,60 @@ function drawBarChart() {
             .text(function (d) { return getData(d) });
     } else {
 
-        var svg3 = d3.selectAll("barchart" + currentPanel).data(filteredData);
-
-        svg3.selectAll(".bar")
-            .data(filteredData)
-            .exit()
-            .remove();
-
-        svg3.selectAll("g.y.axis")
+        svg[currentPanel - 1].selectAll("g.y.axis")
             .transition()
             .duration(1000)
             .call(yAxis);
 
-        svg3.selectAll("g.x.axis")
+        svg[currentPanel - 1].selectAll("g.x.axis")
             .transition()
             .duration(1000)
             .call(xAxis);
+            
+        //Select…
+        var bars = svg[currentPanel - 1].selectAll("rect")
+            .data(filteredData);
 
-
-        svg3.selectAll(".bar")
-            .data(filteredData)
-            .transition()
-            .duration(1000)
+        //Enter…
+        bars.enter()
+            .append("rect")
             .attr("x", function (d) {
                 return x(d.AGE);
             })
-            .attr("width", x.rangeBand())
             .attr("y", function (d) {
                 return y(getData(d));
             })
+            .attr("width", x.rangeBand())
+            .attr("height", function (d) {
+                return height - y(getData(d));
+            })
+            .attr("fill", function (d) {
+                return getColor(d.AGE);
+            });
+    
+        //Update all rects
+        bars.transition()
+            .duration(1000)
+            .attr("x", function (d, i) {
+                return x(d.AGE);
+            })
+            .attr("y", function (d) {
+                return y(getData(d));
+            })
+            .attr("width", x.rangeBand())
             .attr("height", function (d) {
                 return height - y(getData(d));
             })
             .style("fill", function (d) {
                 return getColor(d.AGE);
             });
-
-        svg3.selectAll(".bar")
-            .data(filteredData)
-            .enter().append("rect")
-            .attr("class", "bar")
-            .attr("font-size", "150%")
-            .attr("x", function (d) {
+            
+            
+        //Exit…
+        bars.exit()
+            .attr("x", function (d, i) {
                 return x(d.AGE);
             })
-            .attr("width", x.rangeBand())
-            .attr("y", function (d) {
-                return y(getData(d));
-            })
-            .attr("height", function (d) {
-                return height - y(getData(d));
-            })
-            .style("fill", function (d) {
-                return getColor(d.AGE);
-            })
-            .append("svg:title")
-            .text(function (d) { return getData(d) });
-
+            .remove();        
     }
 }

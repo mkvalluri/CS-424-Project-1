@@ -1,0 +1,182 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CS 424 - Project #1</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-md-offset-1 text-left">
+                <!-- Header Portion -->    
+                <h1>CS 424 - Project #1</h1>
+            </div>
+        </div>
+    </div>                
+    <hr>
+    <!-- Body Portion -->
+    <!-- Defining container and then row which would wrap the entire body -->
+    <div class="container-fluid text-center">      
+        <div class="row">
+            <div class="col-md-1 col-md-offset-1 text-left">
+                <ul class="nav nav-pills nav-stacked text-right">
+                    <li role="presentation"><a href="index.html">Home</a></li>
+                    <li role="presentation"><a href="features.html">Features</a></li>
+                    <li role="presentation" class="active"><a href="application.html">Application</a></li>
+                    <li role="presentation"><a href="sourcecode.html">Source Code</a></li>
+                    <li role="presentation"><a href="observations.html">Observations</a></li>
+                    <li role="presentation"><a href="contactme.html">Contact Me</a></li>
+                </ul>
+                <hr>  
+                <div class="form-group">
+                     <label for="yearSelect">Year</label>
+                     <select id="yearSelect" class="form-control">
+                         <option value="2010" selected>2010</option>
+                         <option value="2011">2011</option>
+                         <option value="2012">2012</option>
+                         <option value="2013">2013</option>
+                         <option value="2014">2014</option>
+                     </select>
+                     <br>
+                     <label for="eventSelect">Event</label>
+                     <select id="eventSelect" class="form-control">
+                         <option value="0">Select Event</option>
+                         <option value="2010">Event #1</option>
+                         <option value="2011">Event #2</option>
+                         <option value="2012">Event #3</option>
+                         <option value="2013">Event #4</option>
+                         <option value="2014">Event #5</option>
+                     </select>
+                     <br>
+                     <label for="groupBySelect">Group Ages By</label>
+                     <select id="groupBySelect" class="form-control">
+                         <option value="0">None</option>
+                         <option value="10">10</option>
+                     </select>   
+                     <br>                  
+                     <label for="genderSelect">Gender</label>
+                     <select id="genderSelect" class="form-control">
+                         <option value="1">Male</option>
+                         <option value="2">Female</option>
+                         <option value="0" selected>Both</option>
+                     </select>            
+                     <br>     
+                     <label for="minValue">Min Age</label>
+                     <input id="minValue" class="form-control ageGroup" type="text" value="0">
+                     <br>                          
+                     <label for="maxValue">Min Age</label>
+                     <input id="maxValue" class="form-control ageGroup" type="text" value="85">  
+                 </div>
+            </div>
+            <div class="col-md-10 rowContainer">
+                <div class="row">
+                    <div class="col-xs-2">         
+                            <div class="form-group text-left">
+                                <label for="countryListSelect_1">Country</label>
+                                <select id="countryListSelect_1" class="form-control countryListSelect">
+                                    <option>Select Country</option>
+                                    <option value="US">United States</option>
+                                    <option value="India">India</option>
+                                    <option value="Malaysia">Malaysia</option>
+                                    <option value="Germany">Germany</option>
+                                    <option value="Greece">Greece</option>
+                                    <option value="Syria">Syria</option>
+                                    <option value="UAE">UAE</option>
+                                </select>
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="stateListSelect_1">State</label>
+                                <select id="stateListSelect_1" class="form-control stateListSelect" disabled="disabled">
+                                    <option>Select State</option>
+                                </select>
+                            </div>
+                    </div>
+                    <div class="col-xs-6 barChartContainer">
+                        <barchart1></barchart1>  
+                    </div>
+                    <div class="col-xs-2 pieChartContainer">  
+                        <piechart1></piechart1>   
+                    </div>        
+                </div>
+                <hr> 
+                <div class="row">
+                    <div class="col-xs-2 menuContainer text-left">
+                            <div class="form-group text-left">
+                                <label for="countryListSelect_2">Country</label>
+                                <select id="countryListSelect_2" class="form-control countryListSelect">
+                                    <option>Select Country</option>
+                                    <option value="US">United States</option>
+                                    <option value="India">India</option>
+                                    <option value="Malaysia">Malaysia</option>
+                                    <option value="Germany">Germany</option>
+                                    <option value="Greece">Greece</option>
+                                    <option value="Syria">Syria</option>
+                                    <option value="UAE">UAE</option>
+                                </select>
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="stateListSelect_2">State</label>
+                                <select id="stateListSelect_2" class="form-control stateListSelect" disabled="disabled">
+                                    <option>Select State</option>
+                                </select>
+                            </div>
+                    </div>
+                    <div class="col-xs-6 barChartContainer">
+                        <barchart2></barchart2>  
+                    </div>
+                    <div class="col-xs-2 pieChartContainer">  
+                        <piechart2></piechart2>   
+                    </div>        
+                </div>
+                <hr> 
+                <div class="row">
+                    <div class="col-xs-2 menuContainer text-left">
+                            <div class="form-group">
+                                <label for="countryListSelect_3">Country</label>
+                                <select id="countryListSelect_3" class="form-control countryListSelect">
+                                    <option>Select Country</option>
+                                    <option value="US">United States</option>
+                                    <option value="India">India</option>
+                                    <option value="Malaysia">Malaysia</option>
+                                    <option value="Germany">Germany</option>
+                                    <option value="Greece">Greece</option>
+                                    <option value="Syria">Syria</option>
+                                    <option value="UAE">UAE</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="stateListSelect_3">State</label>
+                                <select id="stateListSelect_3" class="form-control stateListSelect" disabled="disabled">
+                                    <option>Select State</option>
+                                </select>
+                            </div>
+                    </div>
+                    <div class="col-xs-6 barChartContainer">
+                        <barchart3></barchart3>  
+                    </div>
+                    <div class="col-xs-2 pieChartContainer">  
+                        <piechart3></piechart3>   
+                    </div>        
+                </div>
+            </div>
+        </div>  
+        
+        <hr>
+        <footer class="text-center">
+            <h5>&copy; Murali Krishna Valluri 2015</h5>
+        </footer>
+    </div>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+<script src="js/colorbrewer.js"></script>
+<script src="js/program.js"></script>
+<script src="js/barChart.js"></script>
+<script src="js/pieChart.js"></script>
+</body>
+</html>
