@@ -38,6 +38,38 @@ function calculateDimensions() {
 
 calculateDimensions();
 
+//Used for creating SVGs which will be used by Bar charts.
+function createBarChartSVGs() {
+
+    var svg1 = d3.select("barchart1")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom + 10)
+        .append("g")
+        .attr("transform", "translate(" + (margin.left + 30) + ",0)");
+
+    var svg2 = d3.select("barchart2")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom + 10)
+        .append("g")
+        .attr("transform", "translate(" + (margin.left + 30) + ",0)");
+
+    var svg3 = d3.select("barchart3")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom + 10)
+        .append("g")
+        .attr("transform", "translate(" + (margin.left + 30) + ",0)");
+
+    svg.push(svg1);
+    svg.push(svg2);
+    svg.push(svg3);
+
+}
+
+createBarChartSVGs();
+
 //Used for calculating new scales based on the input data.
 function changeScale(data) {
     x = d3.scale.ordinal()
