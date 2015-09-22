@@ -240,6 +240,7 @@ var states = [
     }
 ];
 
+//Populate states
 states.forEach(function (element) {
     var option1 = document.createElement('option');
     var option2 = document.createElement('option');
@@ -251,30 +252,37 @@ states.forEach(function (element) {
     stateSelect3.add(option3, states.indexOf(element) + 1);
 }, this);
 
+
+//Called whenever gender is changed
 $('#genderSelect').on('change', function () {
     genderSelected = $(this).val();
     resetMinMaxValues();
     drawAllCharts();
 });
 
+
+//Called whenever year is changed.
 $('#yearSelect').on('change', function () {
     yearSelected = $(this).val();
     resetMinMaxValues();
     drawAllCharts();
 });
 
+//Called whenever event is changed
 $('#eventSelect').on('change', function () {
     eventSelected = $(this).val();
     resetMinMaxValues();
     drawAllCharts();
 });
 
+//Called whenver grooup(country, state) is changed
 $('#groupBySelect').on('change', function () {
     groupBySelected = $(this).val();
     resetMinMaxValues();
     drawAllCharts();
 });
 
+//Called whenever country is changed
 $('.countryListSelect').on('change', function () {
     var panelId = $(this).attr('id').split('_')[1];
     currentCountry = $(this).val();
@@ -296,6 +304,7 @@ $('.countryListSelect').on('change', function () {
     drawAllCharts();
 });
 
+//Called whenever state is chagned.
 $('.stateListSelect').on('change', function () {
     var panelId = $(this).attr('id').split('_')[1];
     currentState = $(this).val();
@@ -314,6 +323,7 @@ $('.stateListSelect').on('change', function () {
     drawAllCharts();
 });
 
+//Called whenver we want to compare states instead of countries or vice versa
 $('#compareSelect').on('change', function () {
     var tempVal = $(this).val();
     if (tempVal == "0") {
@@ -329,12 +339,14 @@ $('#compareSelect').on('change', function () {
     }
 });
 
+//Remove countries from the list
 function removeCountries() {
     countries.forEach(function (element) {
         $(".countryListSelect  option[value='" + element + "']").remove();
     });
 }
 
+//Add countries to the list
 function addCountries() {
     countries.forEach(function (element) {
         $('.countryListSelect')
@@ -344,6 +356,7 @@ function addCountries() {
     });
 }
 
+//Called whenver age group is changed
 $('.ageGroup').on('change', function () {
     minAge = parseInt($('#minValue').val());
     maxAge = parseInt($('#maxValue').val());
@@ -351,6 +364,7 @@ $('.ageGroup').on('change', function () {
     drawAllCharts();
 })
 
+//Draws all the charts
 function drawAllCharts() {
     drawBarChart();
     for (var i = 1; i <= 3; i++) {
@@ -367,6 +381,7 @@ function drawAllCharts() {
 
 var grpColor = 0;
 
+//Gets color based on input value
 function getColor(value) {
     value = +value;
     var returnColor;
@@ -505,6 +520,7 @@ function filterPayload(dataObj) {
     }
 }
 
+//Get current year
 function getYear() {
     if (eventSelected != "0") {
         return eventSelected;
@@ -512,6 +528,7 @@ function getYear() {
     return yearSelected;
 }
 
+//Get current year data
 function getData(d) {
     if (getYear() == "2010") {
         return d.POPEST2010_CIV;
@@ -526,6 +543,7 @@ function getData(d) {
     }
 }
 
+//Get current year column name
 function getColumnName() {
     if (getYear() == "2010") {
         return "POPEST2010_CIV";
