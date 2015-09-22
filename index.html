@@ -33,7 +33,6 @@
                     <li role="presentation"><a href="application.html">Application</a></li>
                     <li role="presentation"><a href="sourcecode.html">Source Code</a></li>
                     <li role="presentation"><a href="observations.html">Observations</a></li>
-                    <li role="presentation"><a href="contactme.html">Contact Me</a></li>
                 </ul>
             </div>
             <div class="col-md-10 rowContainer">
@@ -41,32 +40,58 @@
                 <p class="lead">Events shape attitudes and opinions. This application will focus on using basic graphs to show information
                     on the ages of people around the US and around the world, and relate that age information to various
                     events. </p>
+
+                <h3>Data Sources and Extraction</h3>
+                <p>Data is collected from http://www.census.gov/popest/data/state/asrh/2014/SC-EST2014-AGESEX-CIV.html and https://www.census.gov/population/international/data/idb/region.php
+                    <br> Once data is collected, the csv files were opened in Excel and only columns required for plotting the
+                    graphs were retained.
+                    <br> Also the data related to different coutries were extracted and formatted similar to what we have for
+                    US states.</p>
+
+                <h3>Frameworks, Libraries used</h3>
+                <p>We used <a href="http://http://d3js.org/">d3js</a> for manipulating dom elements. Used <a href="http://getbootstrap.com/">Bootstrap</a>                    for styling.</p>
+
+                <h3>References</h3>
+                <p>Many tuturials available online were refered. Couple of important sites were http://chimera.labs.oreilly.com/books/1230000000345/ch11.html
+                    and https://vis4.net/blog/posts/avoid-equidistant-hsv-colors/.</p>
+
+
                 <h3>Design</h3>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Initial Design</div>
-                    <div class="panel-body">
-                        <img src="images/1.png" width="80%" class="img-rounded">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Initial Design</div>
+                            <div class="panel-body">
+                                <img src="images/1.png" width="100%" class="img-rounded img-responsive">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Update #1 - Changed the way graphs are aligned</h3>
+                            </div>
+                            <div class="panel-body">
+                                <img src="images/2.png" width="100%" class="img-rounded img-responsive">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Update #2 - Final Version with all the filters added</h3>
+                            </div>
+                            <div class="panel-body">
+                                <img src="images/3.png" width="100%" class="img-rounded img-responsive">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Update #1 - Changed the way graphs are aligned</h3>
-                    </div>
-                    <div class="panel-body">
-                        <img src="images/2.png" width="80%" class="img-rounded">
-                    </div>
-                </div>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Update #2 - Final Version with all the filters added</h3>
-                    </div>
-                    <div class="panel-body">
-                        <img src="images/3.png" width="80%" class="img-rounded">
-                    </div>
-                </div>
-
+                <h3>Special Credits</h3>
+                <p>Special thanks to my professor <a href="https://www.evl.uic.edu/aej/">Prof. Andrew Johnson</a>, users over <a href="http://stackoverflow.com">StackOverflow</a> and also
+                    my friends Sukhendra and Spoorthi who helped in identifying few events and also helped me in cleaning
+                    up the data.</p>
             </div>
         </div>
 

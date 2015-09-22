@@ -374,13 +374,13 @@ function getColor(value) {
     value = value / 7;
     var range = [0, 15];
 
-    if (eventSelected != "0" && tempVal < 12) {
+    if (eventSelected != "0" && tempVal < 12 && groupBySelected == 0) {
         var color = d3.scale.linear()
             .domain(range)
             .range(["Grey", "White"])
             .interpolate(d3.interpolateHcl);
         return color(10);
-    }
+    } 
 
     if (groupBySelected > 0) {
         if (grpColor == 8)
